@@ -1,9 +1,30 @@
 #include "mainFrame.h"
+#include <wx/socket.h>
 
 static wxArrayString cheat_list;
+static wxArrayString cmd;
+
+enum
+{
+    CMD_WINDOWS = 0,
+    CMD_LINUX   = 1,
+};
+
+BEGIN_EVENT_TABLE(MainFrame, wxFrame)
+  EVT_BUTTON( ID_HOME,   MainFrame::OnHome)
+  EVT_BUTTON( ID_FORUM,  MainFrame::OnForum)
+  EVT_BUTTON( ID_PANEL,  MainFrame::OnPanel)
+  EVT_BUTTON( ID_WIKI,   MainFrame::OnWiki)
+  EVT_BUTTON( ID_ARMORY, MainFrame::OnArmory)
+  EVT_BUTTON( ID_PLAY,   MainFrame::OnPlay)
+END_EVENT_TABLE()
+
 
 void init_cheat_list()
 {
+    // tu komendy pod rozne systemy
+    cmd.Add(wxString("tasklist"));
+    cmd.Add(wxString("ps -A"));
     // tu dodajemy wpisy ktore ma sprawdzic
     cheat_list.Add(wxString("wowemuhack"));
     cheat_list.Add(wxString("wpe"));
@@ -21,9 +42,14 @@ bool scan(wxString &string_to_scan)
 
 bool MainFrame::win_process_scan()
 {
-    wxString cmd("tasklist");
+#ifdef WIN32
+    wxString command = cmd[CMD_WINDOWS];
+#else
+    wxString command = cmd[CMD_LINUX];
+#endif
+
     wxArrayString output, error;
-    wxExecute(cmd, output, error);
+    wxExecute(command, output, error);
 
     for (wxArrayString::iterator iter = output.begin(); iter != output.end(); ++iter)
         if (scan(*iter))
@@ -31,17 +57,30 @@ bool MainFrame::win_process_scan()
     return false;
 }
 
-
 MainFrame::MainFrame(const wxString& title)
 : wxFrame((wxFrame *)NULL, wxID_ANY, title, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT),
           wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxFRAME_SHAPED)
 {
     Center();
-    m_panel = new wxPanel(this, wxID_ANY);
+    m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
 
-    int y = 50;
-    for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
-        m_button[i] = new wxButton(m_panel, wxID_ANY, (wxChar *)"sadas", wxPoint(70, y +(y*i)));
+    m_button[0] = new wxButton(m_panel, ID_HOME, wxString("HG Home"),
+                               wxPoint(MAIN_FRAME_WIDTH-130, 10), wxSize(120, 60));
+
+    m_button[1] = new wxButton(m_panel, ID_FORUM, wxString("HG Forum"),
+                               wxPoint(MAIN_FRAME_WIDTH-130, 80), wxSize(120, 60));
+
+    m_button[2] = new wxButton(m_panel, ID_PANEL, wxString("HG Panel Gracza"),
+                               wxPoint(MAIN_FRAME_WIDTH-130, 150), wxSize(120, 60));
+
+    m_button[3] = new wxButton(m_panel, ID_ARMORY, wxString("HG Armory"),
+                               wxPoint(MAIN_FRAME_WIDTH-130, 220), wxSize(120, 60));
+
+    m_button[4] = new wxButton(m_panel, ID_WIKI, wxString("HG WoWWiki"),
+                               wxPoint(MAIN_FRAME_WIDTH-130, 290), wxSize(120, 60));
+
+    m_button[5] = new wxButton(m_panel, ID_PLAY, wxString("Play WoW!"),
+                               wxPoint(MAIN_FRAME_WIDTH-130, 360), wxSize(120, 60));
 
     //wxProcess *test = wxProcess::Open("start wow.exe");
     //wxMenu *menuFile = new wxMenu;
@@ -73,7 +112,7 @@ MainFrame::~MainFrame()
     delete m_panel;
 }
 
-void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
+/*void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 {
     Close(TRUE);
-}
+}*/
