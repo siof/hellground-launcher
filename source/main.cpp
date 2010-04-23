@@ -27,7 +27,7 @@ bool LauncherApp::OnInit()
     frame->Show();
     SetTopWindow(frame);
     return true;
-} 
+}
 
 /*
 void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
