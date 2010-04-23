@@ -3,7 +3,7 @@
 
 #include <wx/process.h>
 #include <wx/socket.h>
-
+#include <wx/html/htmlwin.h>
 
 static wxArrayString cheat_list;
 static wxArrayString cmd;
@@ -69,51 +69,41 @@ MainFrame::MainFrame(const wxString& title)
     Center();
     m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
 
-    m_button[0] = new wxButton(m_panel, ID_HOME, wxString("HG Home"),
+    m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(5,5), wxSize(MAIN_FRAME_WIDTH-140, MAIN_FRAME_HEIGHT-65), wxHW_SCROLLBAR_AUTO, "WINDOW");
+    // nie dziaua load page ;<
+    m_button[BUTTON_HOME] = new wxButton(m_panel, ID_HOME, wxString("HG Home"),
                                wxPoint(MAIN_FRAME_WIDTH-130, 10), wxSize(120, 60));
 
-    m_button[1] = new wxButton(m_panel, ID_FORUM, wxString("HG Forum"),
+    m_button[BUTTON_FORUM] = new wxButton(m_panel, ID_FORUM, wxString("HG Forum"),
                                wxPoint(MAIN_FRAME_WIDTH-130, 80), wxSize(120, 60));
 
-    m_button[2] = new wxButton(m_panel, ID_PANEL, wxString("HG Panel Gracza"),
+    m_button[BUTTON_PANEL] = new wxButton(m_panel, ID_PANEL, wxString("HG Panel Gracza"),
                                wxPoint(MAIN_FRAME_WIDTH-130, 150), wxSize(120, 60));
 
-    m_button[3] = new wxButton(m_panel, ID_ARMORY, wxString("HG Armory"),
+    m_button[BUTTON_ARMORY] = new wxButton(m_panel, ID_ARMORY, wxString("HG Armory"),
                                wxPoint(MAIN_FRAME_WIDTH-130, 220), wxSize(120, 60));
 
-    m_button[4] = new wxButton(m_panel, ID_WIKI, wxString("HG WoWWiki"),
+    m_button[BUTTON_WIKI] = new wxButton(m_panel, ID_WIKI, wxString("HG WoWWiki"),
                                wxPoint(MAIN_FRAME_WIDTH-130, 290), wxSize(120, 60));
 
-    m_button[5] = new wxButton(m_panel, ID_PLAY, wxString("Play WoW!"),
+    m_button[BUTTON_PLAY] = new wxButton(m_panel, ID_PLAY, wxString("Play WoW!"),
                                wxPoint(MAIN_FRAME_WIDTH-130, 360), wxSize(120, 60));
-
-    //wxProcess *test = wxProcess::Open("start wow.exe");
-    //wxMenu *menuFile = new wxMenu;
-
-    //menuFile->Append( ID_About, (wxChar *)"&About..." );
-    //menuFile->AppendSeparator();
-    //menuFile->Append( ID_Quit, (wxChar *)"&Exit" );
- 
-    //wxMenuBar *menuBar = new wxMenuBar;
-    //menuBar->Append( menuFile, (wxChar *)"&File" );
- 
-    //SetMenuBar( menuBar );
 
     init_cheat_list();
 
     bool noob = win_process_scan();
+
     // nie wiem jaka to flaga 65536 w define, ale usuwamy domyslna 16 | 65536 bo brzydko wygldala
     CreateStatusBar(1, 65536);
-    if(noob)
-        SetStatusText( (wxChar *)"CHEAT FOUND" );
-    else
-        SetStatusText( (wxChar *)"CHEAT NOT FOUND" );
+    SetStatusText("HG Launcher v"
+                  LAUNCHER_VERSION);
 }
 
 MainFrame::~MainFrame()
 {
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
+    delete m_html;
     delete m_panel;
 }
 
@@ -132,7 +122,7 @@ void MainFrame::OnPlay(wxCommandEvent &)
         delete process;
         return;
     }
-    m_button[5]->Disable();
+    m_button[BUTTON_PLAY]->Disable();
 }
 
 /*void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
