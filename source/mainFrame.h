@@ -1,6 +1,7 @@
 
 
-#include "wx/wx.h"
+#include <wx/wx.h>
+#include <wx/process.h>
 
 
 #ifndef __MAIN_FRAME_H__
@@ -21,6 +22,7 @@ enum
     ID_ARMORY,
     ID_WIKI,
     ID_PLAY,
+    ID_WOW_PROCESS,
 };
 
 class MainFrame : public wxFrame
@@ -36,7 +38,9 @@ class MainFrame : public wxFrame
         void OnPanel(wxCommandEvent &) {wxLaunchDefaultBrowser(wxString("http://panel.gamefreedom.pl/"));};
         void OnArmory(wxCommandEvent &){wxLaunchDefaultBrowser(wxString("http://gogle.pl"));}; // unused bo nie dziala ;S
         void OnWiki(wxCommandEvent &)  {wxLaunchDefaultBrowser(wxString("http://hgwiki.gamefreedom.pl/"));};
-        void OnPlay(wxCommandEvent &)  {};
+        void OnPlay(wxCommandEvent &);
+
+        void OnWoWClose(wxProcessEvent &) {m_button[5]->Enable();}
 
     private:
         wxPanel  *m_panel;

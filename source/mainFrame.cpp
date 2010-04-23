@@ -1,5 +1,9 @@
+
 #include "mainFrame.h"
+
+#include <wx/process.h>
 #include <wx/socket.h>
+
 
 static wxArrayString cheat_list;
 static wxArrayString cmd;
@@ -17,6 +21,7 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
   EVT_BUTTON( ID_WIKI,   MainFrame::OnWiki)
   EVT_BUTTON( ID_ARMORY, MainFrame::OnArmory)
   EVT_BUTTON( ID_PLAY,   MainFrame::OnPlay)
+  EVT_END_PROCESS( ID_WOW_PROCESS, MainFrame::OnWoWClose)
 END_EVENT_TABLE()
 
 
@@ -110,6 +115,24 @@ MainFrame::~MainFrame()
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
     delete m_panel;
+}
+
+void MainFrame::OnPlay(wxCommandEvent &)
+{
+    wxString cmd("WoW.exe");
+
+    SetStatusText(wxString("Launching World of Warcraft. Please wait..."));
+    wxProcess *process = new wxProcess(this, ID_WOW_PROCESS);
+    long int pid = wxExecute(cmd, wxEXEC_ASYNC, process);
+
+    if (!process->Exists(pid))
+    {
+        SetStatusText(wxString("ERROR! Couldn't find WoW.exe! "
+                               "Launcher must be in World of Warcraft installation directory!"));
+        delete process;
+        return;
+    }
+    m_button[5]->Disable();
 }
 
 /*void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
