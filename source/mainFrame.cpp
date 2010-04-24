@@ -29,7 +29,7 @@ void init_cheat_list()
 {
     // tu komendy pod rozne systemy
     cmd.Add(wxString("tasklist"));
-    cmd.Add(wxString("ps"));
+    cmd.Add(wxString("ps -A"));
     // tu dodajemy wpisy ktore ma sprawdzic
     cheat_list.Add(wxString("wowemuhack"));
     cheat_list.Add(wxString("wpe"));
@@ -100,8 +100,7 @@ MainFrame::MainFrame(const wxString& title)
 
     init_cheat_list();
 
-    //bool noob = win_process_scan();
-    bool noob = lin_process_scan();
+    bool noob = process_scan();
 
     // nie wiem jaka to flaga 65536 w define, ale usuwamy domyslna 16 | 65536 bo brzydko wygldala
     CreateStatusBar(1, 65536);
@@ -115,7 +114,6 @@ MainFrame::~MainFrame()
         delete m_button[i];
     delete m_html;
     delete m_panel;
-    //delete m_checkbox; //komentarz bo crashuje ;p
 }
 
 void MainFrame::OnPlay(wxCommandEvent &)

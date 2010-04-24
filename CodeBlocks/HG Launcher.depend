@@ -1,7 +1,6 @@
 # depslib dependency file v1.0
-1272121119 source:/home/gareth/Programy/HG Launcher/source/main.cpp
+1272147445 source:/home/gareth/Programy/HG Launcher/source/main.cpp
 	<wx/wx.h>
-	<wx/app.h>
 	"mainFrame.h"
 
 1270648194 /usr/local/include/wx-2.9/wx/wx.h
@@ -1501,7 +1500,7 @@
 1270648196 /usr/local/include/wx-2.9/wx/gtk/mdi.h
 	"wx/frame.h"
 
-1272145042 /home/gareth/Programy/HG Launcher/source/mainFrame.h
+1272147036 /home/gareth/Programy/HG Launcher/source/mainFrame.h
 	<wx/wx.h>
 	<wx/process.h>
 	<wx/html/htmlwin.h>
@@ -1645,7 +1644,7 @@
 	"wx/defs.h"
 	"wx/filesys.h"
 
-1272145783 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
+1272147420 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
 	"mainFrame.h"
 	<wx/process.h>
 	<wx/socket.h>
