@@ -90,6 +90,8 @@ MainFrame::MainFrame(const wxString& title)
     m_checkbox->SetValue(true);
 #endif
 
+    m_button[BUTTON_ARMORY]->Disable(); //tymczasowo do czasu wlaczenia armory
+
     init_cheat_list();
 
     bool noob = process_scan();
@@ -111,6 +113,12 @@ MainFrame::~MainFrame()
 
 void MainFrame::OnPlay(wxCommandEvent &)
 {
+    wxFile realmlist("realmlist.wtf", wxFile::write);
+
+    realmlist.Write("set realmlist logonhg.gamefreedom.pl");
+
+    realmlist.Close();
+
     wxString cmd;
 #ifdef WIN32
     cmd = "Wow.exe";

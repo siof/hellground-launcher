@@ -1500,9 +1500,10 @@
 1270648196 /usr/local/include/wx-2.9/wx/gtk/mdi.h
 	"wx/frame.h"
 
-1272147036 /home/gareth/Programy/HG Launcher/source/mainFrame.h
+1272149384 /home/gareth/Programy/HG Launcher/source/mainFrame.h
 	<wx/wx.h>
 	<wx/process.h>
+	<wx/socket.h>
 	<wx/html/htmlwin.h>
 
 1270648193 /usr/local/include/wx-2.9/wx/process.h
@@ -1644,7 +1645,7 @@
 	"wx/defs.h"
 	"wx/filesys.h"
 
-1272147420 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
+1272150903 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
 	"mainFrame.h"
 	<wx/process.h>
 	<wx/socket.h>
