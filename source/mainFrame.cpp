@@ -6,13 +6,6 @@
 #include <wx/html/htmlwin.h>
 
 static wxArrayString cheat_list;
-static wxArrayString cmd;
-
-enum
-{
-    CMD_WINDOWS = 0,
-    CMD_LINUX   = 1,
-};
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
   EVT_BUTTON( ID_HOME,   MainFrame::OnHome)
@@ -27,9 +20,6 @@ END_EVENT_TABLE()
 
 void init_cheat_list()
 {
-    // tu komendy pod rozne systemy
-    cmd.Add(wxString("tasklist"));
-    cmd.Add(wxString("ps -A"));
     // tu dodajemy wpisy ktore ma sprawdzic
     cheat_list.Add(wxString("wowemuhack"));
     cheat_list.Add(wxString("wpe"));
@@ -47,9 +37,9 @@ bool scan(wxString &string_to_scan)
 bool MainFrame::process_scan()
 {
 #ifdef WIN32
-    wxString command = cmd[CMD_WINDOWS];
+    wxString command = "tasklist";
 #else
-    wxString command = cmd[CMD_LINUX];
+    wxString command = "ps -A";
 #endif
 
     wxArrayString output, error;
@@ -69,10 +59,12 @@ MainFrame::MainFrame(const wxString& title)
     wxInitAllImageHandlers();
     m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
 
-    m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(5,5), wxSize(MAIN_FRAME_WIDTH-140, MAIN_FRAME_HEIGHT-65), wxHW_SCROLLBAR_AUTO, "WINDOW");
-    // nie dziaua load page ;<
-
+    m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(5,5), wxSize(MAIN_FRAME_WIDTH-140, MAIN_FRAME_HEIGHT-65), wxHW_SCROLLBAR_NEVER);
+    // TODO: fix it for windows
     m_html->LoadPage("http://wow.gamefreedom.pl");
+
+    // TODO: connection launcher->tc
+    m_sock = new wxSocketClient(wxSOCKET_NOWAIT);
 
     m_button[BUTTON_HOME] = new wxButton(m_panel, ID_HOME, wxString("HG Home"),
                                wxPoint(MAIN_FRAME_WIDTH-130, 10), wxSize(120, 60));
@@ -102,7 +94,7 @@ MainFrame::MainFrame(const wxString& title)
 
     bool noob = process_scan();
 
-    // nie wiem jaka to flaga 65536 w define, ale usuwamy domyslna 16 | 65536 bo brzydko wygldala
+    // nie wiem jaka to flaga 65536 w define, ale usuwamy domyslna 16 | 65536 bo brzydko wygladala
     CreateStatusBar(1, 65536);
     SetStatusText("HG Launcher v"
                   LAUNCHER_VERSION);
@@ -113,6 +105,7 @@ MainFrame::~MainFrame()
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
     delete m_html;
+    delete m_sock;
     delete m_panel;
 }
 

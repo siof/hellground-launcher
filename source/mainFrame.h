@@ -1,6 +1,7 @@
 
 #include <wx/wx.h>
 #include <wx/process.h>
+#include <wx/socket.h>
 #include <wx/html/htmlwin.h>
 
 
@@ -8,6 +9,10 @@
 #define __MAIN_FRAME_H__
 
 #define LAUNCHER_VERSION    "0.0.1"
+
+#ifdef WIN32
+    #define wxEXEC_NOEVENTS 16
+#endif
 
 enum
 {
@@ -65,6 +70,7 @@ class MainFrame : public wxFrame
         wxButton *m_button[MAIN_FRAME_BUTTONS];
         wxHtmlWindow *m_html;
         wxCheckBox * m_checkbox;
+        wxSocketClient *m_sock;
 
         bool process_scan();
 
