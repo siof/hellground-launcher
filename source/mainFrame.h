@@ -12,7 +12,11 @@
 enum
 {
     MAIN_FRAME_WIDTH   = 600,
+#ifdef LINUX
+    MAIN_FRAME_HEIGHT  = 500,
+#else
     MAIN_FRAME_HEIGHT  = 480,
+#endif
 };
 
 enum Buttons
@@ -36,6 +40,7 @@ enum
     ID_PLAY,
     ID_WOW_PROCESS,
     ID_HTML,
+    ID_CHECK_BOX,
 };
 
 class MainFrame : public wxFrame
@@ -59,8 +64,9 @@ class MainFrame : public wxFrame
         wxPanel  *m_panel;
         wxButton *m_button[MAIN_FRAME_BUTTONS];
         wxHtmlWindow *m_html;
+        wxCheckBox * m_checkbox;
 
-        bool win_process_scan();
+        bool process_scan();
 
         //DECLARE_EVENT_TABLE()
 };
