@@ -59,7 +59,7 @@ class MainFrame : public wxFrame
         void OnHome(wxCommandEvent &)  {wxLaunchDefaultBrowser(wxString("http://wow.gamefreedom.pl/"));};
         void OnForum(wxCommandEvent &) {wxLaunchDefaultBrowser(wxString("http://gamefreedom.pl/"));};
         void OnPanel(wxCommandEvent &) {wxLaunchDefaultBrowser(wxString("http://panel.gamefreedom.pl/"));};
-        void OnArmory(wxCommandEvent &){wxLaunchDefaultBrowser(wxString("http://gogle.pl"));}; // unused bo nie dziala ;S
+        void OnArmory(wxCommandEvent &){wxLaunchDefaultBrowser(wxString("http://armoryhg.dof.nazwa.pl/"));}; // unused bo nie dziala ;S
         void OnWiki(wxCommandEvent &)  {wxLaunchDefaultBrowser(wxString("http://hgwiki.gamefreedom.pl/"));};
         void OnPlay(wxCommandEvent &);
 

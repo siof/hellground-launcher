@@ -24,7 +24,8 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-Os" />
+					<Add option="-O3" />
 					<Add option="-DLINUX" />
 				</Compiler>
 				<Linker>
