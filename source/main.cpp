@@ -1,5 +1,6 @@
 
 #include <wx/wx.h>
+#include <wx/app.h>
 #include "mainFrame.h"
 
 class LauncherApp: public wxApp
