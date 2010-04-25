@@ -118,7 +118,9 @@ MainFrame::MainFrame(const wxString& title)
 
     m_taskbar = new TaskBar();
 
+#ifdef LINUX
     if (m_taskbar->IsAvailable())
+#endif
     {
         m_taskbar->SetIcon(wxIcon(wxString("wow.png"), wxBitmapType(wxBITMAP_TYPE_PNG)), wxString("HG Launcher"));
     }
@@ -141,7 +143,9 @@ MainFrame::~MainFrame()
     delete m_sock;
     delete m_thread;
     delete m_taskbar;
+#ifdef LINUX
     delete m_checkbox;
+#endif
     delete m_panel;
 
     window = NULL;
@@ -204,7 +208,8 @@ void *ACThread::Entry()
 
 //---------------------------------------------------------TaskBar
 
-enum {
+enum
+{
     SHOW_HIDE = 10001,
     EXIT,
 };

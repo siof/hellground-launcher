@@ -54,13 +54,13 @@ enum
 
 class TaskBar : public wxTaskBarIcon
 {
-public:
-    TaskBar(){}
-    void OnLeftButtonDClick(wxTaskBarIconEvent&);
-    void OnMenuShowHide(wxCommandEvent&);
-    void OnMenuExit(wxCommandEvent&);
-private:
-    virtual wxMenu *CreatePopupMenu();
+    public:
+        TaskBar(){}
+        void OnLeftButtonDClick(wxTaskBarIconEvent&);
+        void OnMenuShowHide(wxCommandEvent&);
+        void OnMenuExit(wxCommandEvent&);
+    private:
+        virtual wxMenu *CreatePopupMenu();
 
 DECLARE_EVENT_TABLE()
 };
