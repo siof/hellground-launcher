@@ -1,10 +1,12 @@
 
 #include "mainFrame.h"
+#include "icon.h"       //plik z opisem xmp ikony
 
 #include <wx/process.h>
 #include <wx/socket.h>
 #include <wx/html/htmlwin.h>
 #include <wx/file.h>
+#include <wx/bitmap.h>
 
 MainFrame * window;
 
@@ -69,8 +71,9 @@ MainFrame::MainFrame(const wxString& title)
     m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(5,5), wxSize(MAIN_FRAME_WIDTH-140, MAIN_FRAME_HEIGHT-65), wxHW_SCROLLBAR_NEVER);
     // TODO: fix it for windows
     //m_html->LoadPage("http://wow.gamefreedom.pl");
+    //m_html->SetBackgroundImage(wxBitmap(wxImage("/home/gareth/obrazki/Lain/Close_the_world___SELain_by_Personne146.jpg", wxBITMAP_TYPE_ANY)));
 
-    s_ip.Hostname("logonhg.gamefreedom.pl");
+    s_ip.Hostname(ADRES);
     s_ip.Service(5600);
 
     m_sock = new wxSocketClient();
@@ -111,7 +114,7 @@ MainFrame::MainFrame(const wxString& title)
     if (m_taskbar->IsAvailable())
 #endif
     {
-        m_taskbar->SetIcon(wxIcon(wxString("wow.png"), wxBitmapType(wxBITMAP_TYPE_PNG)), wxString("HG Launcher"));
+        m_taskbar->SetIcon(wxIcon(wow_xpm), wxString("HG Launcher"));
     }
 
     init_cheat_list();
@@ -141,7 +144,7 @@ MainFrame::~MainFrame()
 void MainFrame::OnPlay(wxCommandEvent &)
 {
     wxFile realmlist("realmlist.wtf", wxFile::write);
-    realmlist.Write("set realmlist logonhg.gamefreedom.pl");
+    realmlist.Write("set realmlist " + ADRES);
     realmlist.Close();
 
     wxString cmd;
