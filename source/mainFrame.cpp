@@ -12,7 +12,6 @@ static wxArrayString cheat_list;
 
 static wxIPV4address s_ip;
 
-
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
   EVT_BUTTON( ID_HOME,   MainFrame::OnHome)
   EVT_BUTTON( ID_FORUM,  MainFrame::OnForum)
@@ -50,11 +49,7 @@ bool process_scan()
 
     wxArrayString output, error;
 
-#ifdef WIN32
-    wxExecute(command, output, error);
-#else
     wxExecute(command, output, error, wxEXEC_NOEVENTS);
-#endif
 
     for (wxArrayString::iterator iter = output.begin(); iter != output.end(); ++iter)
         if (scan(*iter))
@@ -126,8 +121,6 @@ MainFrame::MainFrame(const wxString& title)
     }
 
     init_cheat_list();
-
-    bool noob = process_scan();
 
     // nie wiem jaka to flaga 65536 w define, ale usuwamy domyslna 16 | 65536 bo brzydko wygladala
     CreateStatusBar(1, 65536);
