@@ -12,7 +12,7 @@
 #define LAUNCHER_VERSION    "0.0.1"
 
 #ifdef WIN32
-    #define wxEXEC_NOEVENTS 16
+    #define wxEXEC_NOEVENTS 0
 #endif
 
 enum
@@ -91,7 +91,11 @@ class MainFrame : public wxFrame
         void OnPlay(wxCommandEvent &);
         void OnTaskBarLeftClick(wxTaskBarIconEvent &);
 
-        void OnWoWClose(wxProcessEvent &) {m_button[BUTTON_PLAY]->Enable();}
+        void OnWoWClose(wxProcessEvent &)
+        {
+            m_button[BUTTON_PLAY]->Enable();
+            this->Show();
+        }
 
     private:
         wxPanel  *m_panel;
