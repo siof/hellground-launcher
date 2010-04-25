@@ -75,8 +75,7 @@ MainFrame::MainFrame(const wxString& title)
     // TODO: fix it for windows
     //m_html->LoadPage("http://wow.gamefreedom.pl");
 
-    // TODO: connection launcher->tc
-    s_ip.Hostname("logonhg.gamefreedom.pl");//("logonhg.gamefreedom.pl");
+    s_ip.Hostname("logonhg.gamefreedom.pl");
     s_ip.Service(5600);
 
     m_sock = new wxSocketClient();
@@ -138,7 +137,7 @@ MainFrame::~MainFrame()
 {
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
-    //delete m_html;
+    delete m_html;
     delete m_sock;
     delete m_thread;
     delete m_taskbar;
