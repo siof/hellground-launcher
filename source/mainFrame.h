@@ -10,6 +10,8 @@
 #define __MAIN_FRAME_H__
 
 #define LAUNCHER_VERSION    "0.0.1"
+                        //logonhg.gamefreedom.pl
+#define ADRES wxString("5.55.94.203")
 
 #ifdef WIN32
     #define wxEXEC_NOEVENTS 0
