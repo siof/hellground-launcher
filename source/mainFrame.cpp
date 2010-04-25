@@ -42,7 +42,7 @@ bool scan(wxString &string_to_scan)
 bool process_scan()
 {
 #ifdef WIN32
-    wxString command = "tasklist";
+    wxString command = "tasklist /V";
 #else
     wxString command = "ps -A";
 #endif
@@ -74,12 +74,6 @@ MainFrame::MainFrame(const wxString& title)
     s_ip.Service(5600);
 
     m_sock = new wxSocketClient();
-    // try to connect
-    m_sock->Connect(s_ip, true);
-
-    // we will try to reconnect in anticheat loop if not connected here
-    if (!m_sock->IsConnected())
-        m_sock->Close();
 
     m_thread = new ACThread(m_sock);
     m_thread->Create();
