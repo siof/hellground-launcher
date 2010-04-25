@@ -3,6 +3,7 @@
 #include <wx/process.h>
 #include <wx/socket.h>
 #include <wx/html/htmlwin.h>
+#include <wx/taskbar.h>
 
 
 #ifndef __MAIN_FRAME_H__
@@ -48,6 +49,20 @@ enum
     ID_WOW_PROCESS,
     ID_HTML,
     ID_CHECK_BOX,
+    ID_TASKBAR,
+};
+
+class TaskBar : public wxTaskBarIcon
+{
+public:
+    TaskBar(){}
+    void OnLeftButtonDClick(wxTaskBarIconEvent&);
+    void OnMenuShowHide(wxCommandEvent&);
+    void OnMenuExit(wxCommandEvent&);
+private:
+    virtual wxMenu *CreatePopupMenu();
+
+DECLARE_EVENT_TABLE()
 };
 
 class ACThread : public wxThread
@@ -74,6 +89,7 @@ class MainFrame : public wxFrame
         void OnArmory(wxCommandEvent &){wxLaunchDefaultBrowser(wxString("http://armoryhg.dof.nazwa.pl/"));}; // unused bo nie dziala ;S
         void OnWiki(wxCommandEvent &)  {wxLaunchDefaultBrowser(wxString("http://hgwiki.gamefreedom.pl/"));};
         void OnPlay(wxCommandEvent &);
+        void OnTaskBarLeftClick(wxTaskBarIconEvent &);
 
         void OnWoWClose(wxProcessEvent &) {m_button[BUTTON_PLAY]->Enable();}
 
@@ -83,6 +99,7 @@ class MainFrame : public wxFrame
         wxHtmlWindow *m_html;
         wxCheckBox * m_checkbox;
         wxSocketClient *m_sock;
+        TaskBar *m_taskbar;
 
         ACThread *m_thread;
 

@@ -6,6 +6,8 @@
 #include <wx/html/htmlwin.h>
 #include <wx/file.h>
 
+MainFrame * window;
+
 static wxArrayString cheat_list;
 
 static wxIPV4address s_ip;
@@ -47,7 +49,12 @@ bool process_scan()
 #endif
 
     wxArrayString output, error;
+
+#ifdef WIN32
     wxExecute(command, output, error);
+#else
+    wxExecute(command, output, error, wxEXEC_NOEVENTS);
+#endif
 
     for (wxArrayString::iterator iter = output.begin(); iter != output.end(); ++iter)
         if (scan(*iter))
@@ -59,6 +66,7 @@ MainFrame::MainFrame(const wxString& title)
 : wxFrame((wxFrame *)NULL, wxID_ANY, title, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT),
           wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxFRAME_SHAPED)
 {
+    window = this;
     Center();
     wxInitAllImageHandlers();
     m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
@@ -67,7 +75,8 @@ MainFrame::MainFrame(const wxString& title)
     // TODO: fix it for windows
     //m_html->LoadPage("http://wow.gamefreedom.pl");
 
-    s_ip.Hostname("localhost");//("logonhg.gamefreedom.pl");
+    // TODO: connection launcher->tc
+    s_ip.Hostname("logonhg.gamefreedom.pl");//("logonhg.gamefreedom.pl");
     s_ip.Service(5600);
 
     m_sock = new wxSocketClient();
@@ -108,6 +117,13 @@ MainFrame::MainFrame(const wxString& title)
 
     m_button[BUTTON_ARMORY]->Disable(); //tymczasowo do czasu wlaczenia armory
 
+    m_taskbar = new TaskBar();
+
+    if (m_taskbar->IsAvailable())
+    {
+        m_taskbar->SetIcon(wxIcon(wxString("wow.png"), wxBitmapType(wxBITMAP_TYPE_PNG)), wxString("HG Launcher"));
+    }
+
     init_cheat_list();
 
     bool noob = process_scan();
@@ -122,10 +138,14 @@ MainFrame::~MainFrame()
 {
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
-    delete m_html;
+    //delete m_html;
     delete m_sock;
     delete m_thread;
+    delete m_taskbar;
+    delete m_checkbox;
     delete m_panel;
+
+    window = NULL;
 }
 
 void MainFrame::OnPlay(wxCommandEvent &)
@@ -160,6 +180,7 @@ void MainFrame::OnPlay(wxCommandEvent &)
         return;
     }
     m_button[BUTTON_PLAY]->Disable();
+    window->Hide();
 }
 
 void *ACThread::Entry()
@@ -180,6 +201,49 @@ void *ACThread::Entry()
         Sleep(THREAD_SLEEP_INTERVAL);
     }
     return 0;
+}
+
+//---------------------------------------------------------TaskBar
+
+enum {
+    SHOW_HIDE = 10001,
+    EXIT,
+};
+
+BEGIN_EVENT_TABLE(TaskBar, wxTaskBarIcon)
+    EVT_MENU(SHOW_HIDE, TaskBar::OnMenuShowHide)
+    EVT_MENU(EXIT,    TaskBar::OnMenuExit)
+    EVT_TASKBAR_LEFT_DCLICK(TaskBar::OnLeftButtonDClick)
+END_EVENT_TABLE()
+
+void TaskBar::OnMenuShowHide(wxCommandEvent& )
+{
+    if (window->IsShown())
+        window->Hide();
+    else
+        window->Show();
+}
+
+void TaskBar::OnMenuExit(wxCommandEvent& )
+{
+    window->Close(true);
+}
+
+wxMenu *TaskBar::CreatePopupMenu()
+{
+    wxMenu *menu = new wxMenu;
+    menu->Append(SHOW_HIDE, _T("Show/Hide Launcher"));
+    menu->AppendSeparator();
+    menu->Append(EXIT, _T("Exit"));
+    return menu;
+}
+
+void TaskBar::OnLeftButtonDClick(wxTaskBarIconEvent&)
+{
+    if (window->IsShown())
+        window->Hide();
+    else
+        window->Show();
 }
 
 /*void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
