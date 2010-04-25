@@ -22,6 +22,8 @@ enum
 #else
     MAIN_FRAME_HEIGHT  = 480,
 #endif
+
+    THREAD_SLEEP_INTERVAL = 10000,
 };
 
 enum Buttons
@@ -48,6 +50,16 @@ enum
     ID_CHECK_BOX,
 };
 
+class ACThread : public wxThread
+{
+    public:
+        ACThread(wxSocketClient *sock) : wxThread(), m_sock(sock) {}
+
+    private:
+        wxSocketClient *m_sock;
+        void *Entry();
+};
+
 class MainFrame : public wxFrame
 {
     public:
@@ -72,7 +84,9 @@ class MainFrame : public wxFrame
         wxCheckBox * m_checkbox;
         wxSocketClient *m_sock;
 
-        bool process_scan();
+        ACThread *m_thread;
+
+        wxIPV4address m_ip;
 
         //DECLARE_EVENT_TABLE()
 };

@@ -4,8 +4,12 @@
 #include <wx/process.h>
 #include <wx/socket.h>
 #include <wx/html/htmlwin.h>
+#include <wx/file.h>
 
 static wxArrayString cheat_list;
+
+static wxIPV4address s_ip;
+
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
   EVT_BUTTON( ID_HOME,   MainFrame::OnHome)
@@ -34,7 +38,7 @@ bool scan(wxString &string_to_scan)
     return false;
 }
 
-bool MainFrame::process_scan()
+bool process_scan()
 {
 #ifdef WIN32
     wxString command = "tasklist";
@@ -43,7 +47,7 @@ bool MainFrame::process_scan()
 #endif
 
     wxArrayString output, error;
-    wxExecute(command, output, error, wxEXEC_NOEVENTS);
+    wxExecute(command, output, error);
 
     for (wxArrayString::iterator iter = output.begin(); iter != output.end(); ++iter)
         if (scan(*iter))
@@ -61,10 +65,22 @@ MainFrame::MainFrame(const wxString& title)
 
     m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(5,5), wxSize(MAIN_FRAME_WIDTH-140, MAIN_FRAME_HEIGHT-65), wxHW_SCROLLBAR_NEVER);
     // TODO: fix it for windows
-    m_html->LoadPage("http://wow.gamefreedom.pl");
+    //m_html->LoadPage("http://wow.gamefreedom.pl");
 
-    // TODO: connection launcher->tc
-    m_sock = new wxSocketClient(wxSOCKET_NOWAIT);
+    s_ip.Hostname("localhost");//("logonhg.gamefreedom.pl");
+    s_ip.Service(5600);
+
+    m_sock = new wxSocketClient();
+    // try to connect
+    m_sock->Connect(s_ip, true);
+
+    // we will try to reconnect in anticheat loop if not connected here
+    if (!m_sock->IsConnected())
+        m_sock->Close();
+
+    m_thread = new ACThread(m_sock);
+    m_thread->Create();
+    m_thread->Run();
 
     m_button[BUTTON_HOME] = new wxButton(m_panel, ID_HOME, wxString("HG Home"),
                                wxPoint(MAIN_FRAME_WIDTH-130, 10), wxSize(120, 60));
@@ -108,15 +124,14 @@ MainFrame::~MainFrame()
         delete m_button[i];
     delete m_html;
     delete m_sock;
+    delete m_thread;
     delete m_panel;
 }
 
 void MainFrame::OnPlay(wxCommandEvent &)
 {
     wxFile realmlist("realmlist.wtf", wxFile::write);
-
     realmlist.Write("set realmlist logonhg.gamefreedom.pl");
-
     realmlist.Close();
 
     wxString cmd;
@@ -145,6 +160,26 @@ void MainFrame::OnPlay(wxCommandEvent &)
         return;
     }
     m_button[BUTTON_PLAY]->Disable();
+}
+
+void *ACThread::Entry()
+{
+    while (1)
+    {
+        if (!m_sock->IsConnected())
+            m_sock->Connect(s_ip, true);
+
+        if (m_sock->IsConnected())
+        {
+            // found cheat - send cheat kick message
+            if (process_scan())
+                m_sock->Write("Kc", 2);
+        }
+        else
+            m_sock->Close();
+        Sleep(THREAD_SLEEP_INTERVAL);
+    }
+    return 0;
 }
 
 /*void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
