@@ -1500,11 +1500,12 @@
 1270648196 /usr/local/include/wx-2.9/wx/gtk/mdi.h
 	"wx/frame.h"
 
-1272149384 /home/gareth/Programy/HG Launcher/source/mainFrame.h
+1272198989 /home/gareth/Programy/HG Launcher/source/mainFrame.h
 	<wx/wx.h>
 	<wx/process.h>
 	<wx/socket.h>
 	<wx/html/htmlwin.h>
+	<wx/taskbar.h>
 
 1270648193 /usr/local/include/wx-2.9/wx/process.h
 	"wx/event.h"
@@ -1645,11 +1646,12 @@
 	"wx/defs.h"
 	"wx/filesys.h"
 
-1272150903 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
+1272200021 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
 	"mainFrame.h"
 	<wx/process.h>
 	<wx/socket.h>
 	<wx/html/htmlwin.h>
+	<wx/file.h>
 
 1270648194 /usr/local/include/wx-2.9/wx/socket.h
 	"wx/defs.h"
@@ -1660,4 +1662,18 @@
 1270648194 /usr/local/include/wx-2.9/wx/sckaddr.h
 	"wx/defs.h"
 	"wx/string.h"
+
+1270648196 /usr/local/include/wx-2.9/wx/taskbar.h
+	"wx/defs.h"
+	"wx/event.h"
+	"wx/palmos/taskbar.h"
+	"wx/msw/taskbar.h"
+	"wx/gtk/taskbar.h"
+	"wx/unix/taskbarx11.h"
+	"wx/osx/taskbarosx.h"
+	"wx/cocoa/taskbar.h"
+
+1270648196 /usr/local/include/wx-2.9/wx/gtk/taskbar.h
+
+1270648196 /usr/local/include/wx-2.9/wx/unix/taskbarx11.h
 

@@ -34,9 +34,12 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="`wx-config --cflags`" />
 			<Add option="-Wall" />
+			<Add option="`wx-config --cflags`" />
 		</Compiler>
+		<ResourceCompiler>
+			<Add directory="../resource" />
+		</ResourceCompiler>
 		<Linker>
 			<Add option="`wx-config --libs`" />
 		</Linker>
