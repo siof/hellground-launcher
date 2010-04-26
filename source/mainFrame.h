@@ -19,7 +19,7 @@
 
 enum
 {
-    MAIN_FRAME_WIDTH   = 600,
+    MAIN_FRAME_WIDTH   = 640,
 #ifdef LINUX
     MAIN_FRAME_HEIGHT  = 500,
 #else
