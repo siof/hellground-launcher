@@ -127,19 +127,16 @@ MainFrame::MainFrame(const wxString& title)
 
 MainFrame::~MainFrame()
 {
-    /*
-    delete m_thread;
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
     delete m_html;
-    //delete m_sock;
     delete m_taskbar;
 #ifdef LINUX
     delete m_checkbox;
 #endif
+    delete m_thread;
     delete m_panel;
-
-    window = NULL;*/
+    window = NULL;
 }
 
 void MainFrame::OnPlay(wxCommandEvent &)
@@ -181,17 +178,18 @@ void *ACThread::Entry()
 {
     while (1)
     {
-        if (!m_sock->IsConnected())
+        if (m_sock && !m_sock->IsConnected())
             m_sock->Connect(s_ip, true);
 
-        if (m_sock->IsConnected())
+        if (m_sock && m_sock->IsConnected())
         {
             // found cheat - send cheat kick message
-            if (process_scan())
+            if (m_sock && process_scan())
                 m_sock->Write("Kc", 2);
         }
         else
-            m_sock->Close();
+            if (m_sock)
+                m_sock->Close();
         Sleep(THREAD_SLEEP_INTERVAL);
     }
     return 0;
