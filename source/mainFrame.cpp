@@ -127,18 +127,19 @@ MainFrame::MainFrame(const wxString& title)
 
 MainFrame::~MainFrame()
 {
+    /*
+    delete m_thread;
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
     delete m_html;
-    delete m_sock;
-    delete m_thread;
+    //delete m_sock;
     delete m_taskbar;
 #ifdef LINUX
     delete m_checkbox;
 #endif
     delete m_panel;
 
-    window = NULL;
+    window = NULL;*/
 }
 
 void MainFrame::OnPlay(wxCommandEvent &)
