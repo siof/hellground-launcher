@@ -70,9 +70,16 @@ DECLARE_EVENT_TABLE()
 class ACThread : public wxThread
 {
     public:
-        ACThread(wxSocketClient *sock) : wxThread(), m_sock(sock) {}
+        ACThread(wxSocketClient *sock) : wxThread(), m_sock(sock) {loop = true;}
+
+        void Wait()
+        {
+            loop = false;
+            wxThread::Wait();
+        }
 
     private:
+        bool loop;
         wxSocketClient *m_sock;
         void *Entry();
 };
