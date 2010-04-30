@@ -30,6 +30,16 @@ void init_cheat_list()
     // tu dodajemy wpisy ktore ma sprawdzic
     cheat_list.Add(wxString("wowemuhack"));
     cheat_list.Add(wxString("wpe"));
+    cheat_list.Add(wxString("wowporty"));
+    cheat_list.Add(wxString("wmove"));
+    cheat_list.Add(wxString("mmowned"));
+    cheat_list.Add(wxString("gatherbuddy"));
+    cheat_list.Add(wxString("auktionator"));
+    cheat_list.Add(wxString("wow tracker"));
+    cheat_list.Add(wxString("hack"));
+    cheat_list.Add(wxString("cheat engine"));
+    cheat_list.Add(wxString("cheat"));
+    cheat_list.Add(wxString("bh-tool"));
 }
 
 bool scan(wxString &string_to_scan)
@@ -37,7 +47,11 @@ bool scan(wxString &string_to_scan)
     string_to_scan.LowerCase();
     for (wxArrayString::const_iterator cheat = cheat_list.begin(); cheat != cheat_list.end(); ++cheat)
         if (string_to_scan.Contains(*cheat))
-            return true;
+        #ifdef LINUX
+            if (!string_to_scan.Contains("ps -A f"))
+        #endif
+                return true;
+
     return false;
 }
 
@@ -46,7 +60,7 @@ bool process_scan()
 #ifdef WIN32
     wxString command = "tasklist /V";
 #else
-    wxString command = "ps -A";
+    wxString command = "ps -A f";
 #endif
 
     wxArrayString output, error;
@@ -123,6 +137,8 @@ MainFrame::MainFrame(const wxString& title)
     CreateStatusBar(1, 65536);
     SetStatusText("HG Launcher v"
                   LAUNCHER_VERSION);
+
+    SetIcon(wxIcon(wow_xpm));
 }
 
 MainFrame::~MainFrame()

@@ -1500,7 +1500,7 @@
 1270648196 /usr/local/include/wx-2.9/wx/gtk/mdi.h
 	"wx/frame.h"
 
-1272213156 /home/gareth/Programy/HG Launcher/source/mainFrame.h
+1272449605 /home/gareth/Programy/HG Launcher/source/mainFrame.h
 	<wx/wx.h>
 	<wx/process.h>
 	<wx/socket.h>
@@ -1646,12 +1646,14 @@
 	"wx/defs.h"
 	"wx/filesys.h"
 
-1272200021 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
+1272633056 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
 	"mainFrame.h"
+	"icon.h"
 	<wx/process.h>
 	<wx/socket.h>
 	<wx/html/htmlwin.h>
 	<wx/file.h>
+	<wx/bitmap.h>
 
 1270648194 /usr/local/include/wx-2.9/wx/socket.h
 	"wx/defs.h"
@@ -1676,4 +1678,6 @@
 1270648196 /usr/local/include/wx-2.9/wx/gtk/taskbar.h
 
 1270648196 /usr/local/include/wx-2.9/wx/unix/taskbarx11.h
+
+1272633165 /home/gareth/Programy/HG Launcher/source/icon.h
 

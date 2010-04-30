@@ -17,9 +17,6 @@
 					<Add option="-g" />
 					<Add option="-DLINUX" />
 				</Compiler>
-				<ExtraCommands>
-					<Add after="cp ../resource/wow.png ./bin/Debug/wow.png" />
-				</ExtraCommands>
 			</Target>
 			<Target title="Release Linux x64">
 				<Option output="bin/Release/HG Launcher" prefix_auto="1" extension_auto="1" />
@@ -36,9 +33,6 @@
 				<Linker>
 					<Add option="-s" />
 				</Linker>
-				<ExtraCommands>
-					<Add after="cp ../resource/wow.png ./bin/Release/wow.png" />
-				</ExtraCommands>
 			</Target>
 		</Build>
 		<Compiler>
