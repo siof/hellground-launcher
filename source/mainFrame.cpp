@@ -82,10 +82,10 @@ MainFrame::MainFrame(const wxString& title)
     wxInitAllImageHandlers();
     m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
 
-    //m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(0,100), wxSize(MAIN_FRAME_WIDTH, 348), wxHW_SCROLLBAR_NEVER);
+    m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(0,100), wxSize(MAIN_FRAME_WIDTH, 348), wxHW_SCROLLBAR_NEVER);
 
     // TODO: fix it for windows
-    //m_html->LoadPage("http://wow.gamefreedom.pl");
+    //m_html->LoadPage("66.102.13.147");
 
     s_ip.Hostname(ADRES);
     s_ip.Service(5600);
@@ -99,22 +99,22 @@ MainFrame::MainFrame(const wxString& title)
     m_background = new wxStaticBitmap(m_panel, ID_BACKGROUND, wxBitmap(tloXpm), wxPoint(0, -20), wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
 
     m_button[BUTTON_HOME] = new wxBitmapButton(m_panel, ID_HOME, wxBitmap(btnHomeXpm),
-                               wxPoint(20, 474), wxSize(127, 63));
+                               wxPoint(20, 474), wxSize(127, 63), wxBORDER_NONE);
 
     m_button[BUTTON_FORUM] = new wxBitmapButton(m_panel, ID_FORUM, wxBitmap(btnForumXpm),
-                               wxPoint(159, 474), wxSize(128, 63));
+                               wxPoint(159, 474), wxSize(128, 63), wxBORDER_NONE);
 
     m_button[BUTTON_ARMORY] = new wxBitmapButton(m_panel, ID_ARMORY, wxBitmap(btnArmoryXpm),
-                               wxPoint(298, 474), wxSize(127, 63));
+                               wxPoint(298, 474), wxSize(127, 63), wxBORDER_NONE);
 
     m_button[BUTTON_PANEL] = new wxBitmapButton(m_panel, ID_PANEL, wxBitmap(btnPanelXpm),
-                               wxPoint(437, 474), wxSize(127, 63));
+                               wxPoint(437, 474), wxSize(127, 63), wxBORDER_NONE);
 
     //m_button[BUTTON_WIKI] = new wxButton(m_panel, ID_WIKI, wxString(/*"HG WoWWiki"*/""),
     //                           wxPoint(MAIN_FRAME_WIDTH-130, 504), wxSize(120, 60));
 
-    m_button[BUTTON_PLAY] = new wxBitmapButton(m_panel, ID_PLAY, wxBitmap(btnPlayXpm),
-                               wxPoint(628, 487), wxSize(127, 48));
+    m_button[BUTTON_PLAY] = new wxBitmapButton(m_panel, ID_PLAY, wxBitmap(btnPlayXpm), 
+                               wxPoint(628, 487), wxSize(127, 48), wxBORDER_NONE);
 
 
     m_checkbox = new wxCheckBox(m_panel, ID_CHECK_BOX, wxString(/*"-opengl"*/""), wxPoint(646, 465));
@@ -150,7 +150,7 @@ MainFrame::MainFrame(const wxString& title)
 
 MainFrame::~MainFrame()
 {
-    m_thread->Wait();
+    //m_thread->Wait();
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
     delete m_html;
