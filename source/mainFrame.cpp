@@ -1,6 +1,6 @@
 
 #include "mainFrame.h"
-#include "icon.h"       //plik z opisem xmp ikony
+#include "grafiki.h"       //plik z includami grafik
 
 #include <wx/process.h>
 #include <wx/socket.h>
@@ -82,10 +82,10 @@ MainFrame::MainFrame(const wxString& title)
     wxInitAllImageHandlers();
     m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
 
-    m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(5,5), wxSize(MAIN_FRAME_WIDTH-140, MAIN_FRAME_HEIGHT-65), wxHW_SCROLLBAR_NEVER);
+    //m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(0,100), wxSize(MAIN_FRAME_WIDTH, 348), wxHW_SCROLLBAR_NEVER);
+
     // TODO: fix it for windows
     //m_html->LoadPage("http://wow.gamefreedom.pl");
-    //m_html->SetBackgroundImage(wxBitmap(wxImage("/home/gareth/obrazki/Lain/Close_the_world___SELain_by_Personne146.jpg", wxBITMAP_TYPE_ANY)));
 
     s_ip.Hostname(ADRES);
     s_ip.Service(5600);
@@ -96,27 +96,32 @@ MainFrame::MainFrame(const wxString& title)
     m_thread->Create();
     m_thread->Run();
 
-    m_button[BUTTON_HOME] = new wxButton(m_panel, ID_HOME, wxString("HG Home"),
-                               wxPoint(MAIN_FRAME_WIDTH-130, 10), wxSize(120, 60));
+    m_background = new wxStaticBitmap(m_panel, ID_BACKGROUND, wxBitmap(tloXpm), wxPoint(0, -20), wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
 
-    m_button[BUTTON_FORUM] = new wxButton(m_panel, ID_FORUM, wxString("HG Forum"),
-                               wxPoint(MAIN_FRAME_WIDTH-130, 80), wxSize(120, 60));
+    m_button[BUTTON_HOME] = new wxBitmapButton(m_panel, ID_HOME, wxBitmap(btnHomeXpm),
+                               wxPoint(20, 474), wxSize(127, 63));
 
-    m_button[BUTTON_PANEL] = new wxButton(m_panel, ID_PANEL, wxString("HG Panel Gracza"),
-                               wxPoint(MAIN_FRAME_WIDTH-130, 150), wxSize(120, 60));
+    m_button[BUTTON_FORUM] = new wxBitmapButton(m_panel, ID_FORUM, wxBitmap(btnForumXpm),
+                               wxPoint(159, 474), wxSize(128, 63));
 
-    m_button[BUTTON_ARMORY] = new wxButton(m_panel, ID_ARMORY, wxString("HG Armory"),
-                               wxPoint(MAIN_FRAME_WIDTH-130, 220), wxSize(120, 60));
+    m_button[BUTTON_ARMORY] = new wxBitmapButton(m_panel, ID_ARMORY, wxBitmap(btnArmoryXpm),
+                               wxPoint(298, 474), wxSize(127, 63));
 
-    m_button[BUTTON_WIKI] = new wxButton(m_panel, ID_WIKI, wxString("HG WoWWiki"),
-                               wxPoint(MAIN_FRAME_WIDTH-130, 290), wxSize(120, 60));
+    m_button[BUTTON_PANEL] = new wxBitmapButton(m_panel, ID_PANEL, wxBitmap(btnPanelXpm),
+                               wxPoint(437, 474), wxSize(127, 63));
 
-    m_button[BUTTON_PLAY] = new wxButton(m_panel, ID_PLAY, wxString("Play WoW!"),
-                               wxPoint(MAIN_FRAME_WIDTH-130, 360), wxSize(120, 60));
+    //m_button[BUTTON_WIKI] = new wxButton(m_panel, ID_WIKI, wxString(/*"HG WoWWiki"*/""),
+    //                           wxPoint(MAIN_FRAME_WIDTH-130, 504), wxSize(120, 60));
 
-#ifdef LINUX
-    m_checkbox = new wxCheckBox(m_panel, ID_CHECK_BOX, wxString("-opengl"), wxPoint(MAIN_FRAME_WIDTH-100, 425));
+    m_button[BUTTON_PLAY] = new wxBitmapButton(m_panel, ID_PLAY, wxBitmap(btnPlayXpm),
+                               wxPoint(628, 487), wxSize(127, 48));
+
+
+    m_checkbox = new wxCheckBox(m_panel, ID_CHECK_BOX, wxString(/*"-opengl"*/""), wxPoint(646, 465));
     //ustaw checkboxa zaznaczonego domyslnie
+#ifdef WIN32
+    m_checkbox->SetValue(false);
+#else
     m_checkbox->SetValue(true);
 #endif
 
@@ -138,7 +143,9 @@ MainFrame::MainFrame(const wxString& title)
     SetStatusText("HG Launcher v"
                   LAUNCHER_VERSION);
 
+
     SetIcon(wxIcon(wow_xpm));
+    //m_html->SetBackgroundImage(wxBitmap(htmlBoxXpm));
 }
 
 MainFrame::~MainFrame()

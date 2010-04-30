@@ -5,7 +5,6 @@
 #include <wx/html/htmlwin.h>
 #include <wx/taskbar.h>
 
-
 #ifndef __MAIN_FRAME_H__
 #define __MAIN_FRAME_H__
 
@@ -19,12 +18,8 @@
 
 enum
 {
-    MAIN_FRAME_WIDTH   = 640,
-#ifdef LINUX
-    MAIN_FRAME_HEIGHT  = 500,
-#else
-    MAIN_FRAME_HEIGHT  = 480,
-#endif
+    MAIN_FRAME_WIDTH   = 800,
+    MAIN_FRAME_HEIGHT  = 600,
 
     THREAD_SLEEP_INTERVAL = 10000,
 };
@@ -33,11 +28,11 @@ enum Buttons
 {
     BUTTON_HOME = 0,
     BUTTON_FORUM,
-    BUTTON_PANEL,
     BUTTON_ARMORY,
-    BUTTON_WIKI,
+    BUTTON_PANEL,
+    //BUTTON_WIKI,
     BUTTON_PLAY,
-    MAIN_FRAME_BUTTONS = 6,
+    MAIN_FRAME_BUTTONS = 5,//6,
 };
 
 enum
@@ -52,6 +47,7 @@ enum
     ID_HTML,
     ID_CHECK_BOX,
     ID_TASKBAR,
+    ID_BACKGROUND,
 };
 
 class TaskBar : public wxTaskBarIcon
@@ -108,10 +104,11 @@ class MainFrame : public wxFrame
 
     private:
         wxPanel  *m_panel;
-        wxButton *m_button[MAIN_FRAME_BUTTONS];
+        wxBitmapButton *m_button[MAIN_FRAME_BUTTONS];
         wxHtmlWindow *m_html;
         wxCheckBox * m_checkbox;
         wxSocketClient *m_sock;
+        wxStaticBitmap *m_background;
         TaskBar *m_taskbar;
 
         ACThread *m_thread;

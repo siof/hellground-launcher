@@ -1500,7 +1500,7 @@
 1270648196 /usr/local/include/wx-2.9/wx/gtk/mdi.h
 	"wx/frame.h"
 
-1272449605 /home/gareth/Programy/HG Launcher/source/mainFrame.h
+1272645959 /home/gareth/Programy/HG Launcher/source/mainFrame.h
 	<wx/wx.h>
 	<wx/process.h>
 	<wx/socket.h>
@@ -1646,9 +1646,9 @@
 	"wx/defs.h"
 	"wx/filesys.h"
 
-1272633056 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
+1272645917 source:/home/gareth/Programy/HG Launcher/source/mainFrame.cpp
 	"mainFrame.h"
-	"icon.h"
+	"grafiki.h"
 	<wx/process.h>
 	<wx/socket.h>
 	<wx/html/htmlwin.h>
@@ -1680,4 +1680,30 @@
 1270648196 /usr/local/include/wx-2.9/wx/unix/taskbarx11.h
 
 1272633165 /home/gareth/Programy/HG Launcher/source/icon.h
+
+1272639549 /home/gareth/Programy/HG Launcher/source/grafiki.h
+	"../grafika/btnArmory.h"
+	"../grafika/btnForum.h"
+	"../grafika/btnHome.h"
+	"../grafika/btnPanel.h"
+	"../grafika/btnPlay.h"
+	"../grafika/htmlBox.h"
+	"../grafika/tlo.h"
+	"../grafika/icon.h"
+
+1272638083 /home/gareth/Programy/HG Launcher/grafika/btnArmory.h
+
+1272638137 /home/gareth/Programy/HG Launcher/grafika/btnForum.h
+
+1272638076 /home/gareth/Programy/HG Launcher/grafika/btnHome.h
+
+1272638243 /home/gareth/Programy/HG Launcher/grafika/btnPanel.h
+
+1272638345 /home/gareth/Programy/HG Launcher/grafika/btnPlay.h
+
+1272639000 /home/gareth/Programy/HG Launcher/grafika/htmlBox.h
+
+1272645823 /home/gareth/Programy/HG Launcher/grafika/tlo.h
+
+1272633165 /home/gareth/Programy/HG Launcher/grafika/icon.h
 
