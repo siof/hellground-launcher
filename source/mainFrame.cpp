@@ -100,7 +100,7 @@ MainFrame::MainFrame(const wxString& title)
     m_background = new wxBitmapButton(m_panel, ID_BACKGROUND, wxBitmap(tloXpm), wxPoint(0, -20), wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT-30));
     m_background->Disable();
 
-
+    
     m_button[BUTTON_HOME] = new wxBitmapButton(m_panel, ID_HOME, wxBitmap(btnHomeXpm),
                                wxPoint(20, 474), wxSize(127, 63), wxBORDER_NONE);
 
@@ -118,7 +118,6 @@ MainFrame::MainFrame(const wxString& title)
 
     m_button[BUTTON_PLAY] = new wxBitmapButton(m_panel, ID_PLAY, wxBitmap(btnPlayXpm), 
                                wxPoint(628, 487), wxSize(127, 48), wxBORDER_NONE);
-
 
     m_checkbox = new wxCheckBox(m_panel, ID_CHECK_BOX, wxString(/*"-opengl"*/""), wxPoint(646, 465));
     //ustaw checkboxa zaznaczonego domyslnie
@@ -144,9 +143,8 @@ MainFrame::MainFrame(const wxString& title)
     SetStatusText("HG Launcher v"
                   LAUNCHER_VERSION);
 
-
     SetIcon(wxIcon(wow_xpm));
-    //m_html->SetBackgroundImage(wxBitmap(htmlBoxXpm));
+    m_html->SetBackgroundImage(wxBitmap(htmlBoxXpm));
 }
 
 MainFrame::~MainFrame()
@@ -214,7 +212,7 @@ void *ACThread::Entry()
                 Sleep(THREAD_SLEEP_INTERVAL);
                 continue;
             }
-            m_sock->Write("P_", 2);
+            //m_sock->Write("P_", 2);
         }
         else
             m_sock->Close();
