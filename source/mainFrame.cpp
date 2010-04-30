@@ -86,6 +86,7 @@ MainFrame::MainFrame(const wxString& title)
 
     // TODO: fix it for windows
     //m_html->LoadPage("66.102.13.147");
+    m_html->SetPage("HTML WINDOW - newsy, changelog, whatever ");
 
     s_ip.Hostname(ADRES);
     s_ip.Service(5600);
@@ -96,7 +97,9 @@ MainFrame::MainFrame(const wxString& title)
     m_thread->Create();
     m_thread->Run();
 
-    m_background = new wxStaticBitmap(m_panel, ID_BACKGROUND, wxBitmap(tloXpm), wxPoint(0, -20), wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
+    m_background = new wxBitmapButton(m_panel, ID_BACKGROUND, wxBitmap(tloXpm), wxPoint(0, -20), wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT-30));
+    m_background->Disable();
+
 
     m_button[BUTTON_HOME] = new wxBitmapButton(m_panel, ID_HOME, wxBitmap(btnHomeXpm),
                                wxPoint(20, 474), wxSize(127, 63), wxBORDER_NONE);
@@ -124,8 +127,6 @@ MainFrame::MainFrame(const wxString& title)
 #else
     m_checkbox->SetValue(true);
 #endif
-
-    m_button[BUTTON_ARMORY]->Disable(); //tymczasowo do czasu wlaczenia armory
 
     m_taskbar = new TaskBar();
 

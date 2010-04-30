@@ -108,7 +108,7 @@ class MainFrame : public wxFrame
         wxHtmlWindow *m_html;
         wxCheckBox * m_checkbox;
         wxSocketClient *m_sock;
-        wxStaticBitmap *m_background;
+        wxBitmapButton *m_background;
         TaskBar *m_taskbar;
 
         ACThread *m_thread;
