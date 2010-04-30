@@ -10,7 +10,7 @@
 
 #define LAUNCHER_VERSION    "0.0.1"
                         //logonhg.gamefreedom.pl
-#define ADRES wxString("5.55.94.203")
+#define ADRES wxString("logonhg.gamefreedom.pl")
 
 #ifdef WIN32
     #define wxEXEC_NOEVENTS 0
@@ -19,7 +19,7 @@
 enum
 {
     MAIN_FRAME_WIDTH   = 800,
-    MAIN_FRAME_HEIGHT  = 600,
+    MAIN_FRAME_HEIGHT  = 615,
 
     THREAD_SLEEP_INTERVAL = 10000,
 };
