@@ -208,7 +208,12 @@ void *ACThread::Entry()
         {
             // found cheat - send cheat kick message
             if (process_scan())
+            {
                 m_sock->Write("Kc", 2);
+                Sleep(THREAD_SLEEP_INTERVAL);
+                continue;
+            }
+            m_sock->Write("P_", 2);
         }
         else
             m_sock->Close();
