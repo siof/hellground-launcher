@@ -1,4 +1,3 @@
-
 #include "mainFrame.h"
 #include "grafiki.h"       //plik z includami grafik
 
@@ -97,10 +96,13 @@ MainFrame::MainFrame(const wxString& title)
     m_thread->Create();
     m_thread->Run();
 
+    #ifdef WIN32
     m_background = new wxBitmapButton(m_panel, ID_BACKGROUND, wxBitmap(tloXpm), wxPoint(0, -20), wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT-30));
     m_background->Disable();
+    #else
+    m_background = new wxStaticBitmap(m_panel, ID_BACKGROUND, wxBitmap(tloXpm), wxPoint(0, -20), wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT-30));
+    #endif
 
-    
     m_button[BUTTON_HOME] = new wxBitmapButton(m_panel, ID_HOME, wxBitmap(btnHomeXpm),
                                wxPoint(20, 474), wxSize(127, 63), wxBORDER_NONE);
 
@@ -116,7 +118,7 @@ MainFrame::MainFrame(const wxString& title)
     //m_button[BUTTON_WIKI] = new wxButton(m_panel, ID_WIKI, wxString(/*"HG WoWWiki"*/""),
     //                           wxPoint(MAIN_FRAME_WIDTH-130, 504), wxSize(120, 60));
 
-    m_button[BUTTON_PLAY] = new wxBitmapButton(m_panel, ID_PLAY, wxBitmap(btnPlayXpm), 
+    m_button[BUTTON_PLAY] = new wxBitmapButton(m_panel, ID_PLAY, wxBitmap(btnPlayXpm),
                                wxPoint(628, 487), wxSize(127, 48), wxBORDER_NONE);
 
     m_checkbox = new wxCheckBox(m_panel, ID_CHECK_BOX, wxString(/*"-opengl"*/""), wxPoint(646, 465));
@@ -145,6 +147,12 @@ MainFrame::MainFrame(const wxString& title)
 
     SetIcon(wxIcon(wow_xpm));
     m_html->SetBackgroundImage(wxBitmap(htmlBoxXpm));
+
+    m_button[BUTTON_HOME]->SetBitmapHover(wxBitmap(btnHomeHXpm));
+    m_button[BUTTON_FORUM]->SetBitmapHover(wxBitmap(btnForumHXpm));
+    m_button[BUTTON_ARMORY]->SetBitmapHover(wxBitmap(btnArmoryHXpm));
+    m_button[BUTTON_PANEL]->SetBitmapHover(wxBitmap(btnPanelHXpm));
+    m_button[BUTTON_PLAY]->SetBitmapHover(wxBitmap(btnPlayHXpm));
 }
 
 MainFrame::~MainFrame()

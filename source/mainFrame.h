@@ -19,7 +19,11 @@
 enum
 {
     MAIN_FRAME_WIDTH   = 800,
+#ifdef WIN32
     MAIN_FRAME_HEIGHT  = 615,
+#else
+    MAIN_FRAME_HEIGHT  = 600,
+#endif
 
     THREAD_SLEEP_INTERVAL = 10000,
 };
@@ -108,7 +112,11 @@ class MainFrame : public wxFrame
         wxHtmlWindow *m_html;
         wxCheckBox * m_checkbox;
         wxSocketClient *m_sock;
+        #ifdef WIN32
         wxBitmapButton *m_background;
+        #else
+        wxStaticBitmap *m_background;
+        #endif
         TaskBar *m_taskbar;
 
         ACThread *m_thread;

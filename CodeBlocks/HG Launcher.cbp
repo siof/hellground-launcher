@@ -45,7 +45,15 @@
 		<Linker>
 			<Add option="`wx-config --libs`" />
 		</Linker>
-		<Unit filename="../source/icon.h" />
+		<Unit filename="../grafika/btnArmory.h" />
+		<Unit filename="../grafika/btnForum.h" />
+		<Unit filename="../grafika/btnHome.h" />
+		<Unit filename="../grafika/btnPanel.h" />
+		<Unit filename="../grafika/btnPlay.h" />
+		<Unit filename="../grafika/htmlBox.h" />
+		<Unit filename="../grafika/icon.h" />
+		<Unit filename="../grafika/tlo.h" />
+		<Unit filename="../source/grafiki.h" />
 		<Unit filename="../source/main.cpp" />
 		<Unit filename="../source/mainFrame.cpp" />
 		<Unit filename="../source/mainFrame.h" />
