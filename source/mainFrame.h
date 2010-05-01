@@ -18,11 +18,35 @@
 
 enum
 {
-    MAIN_FRAME_WIDTH   = 800,
+    MAIN_FRAME_WIDTH    = 800,
 #ifdef WIN32
-    MAIN_FRAME_HEIGHT  = 615,
+    MAIN_FRAME_HEIGHT   = 615,
+    BUTTON_HEIGHT       = 63,
+    BUTTON_WIDTH        = 127,
+    HOME_POS_X          = 20,
+    HOME_POS_Y          = 474,
+    FORUM_POS_X         = 159,
+    FORUM_POS_Y         = 474,
+    ARMORY_POS_X        = 298,
+    ARMORY_POS_Y        = 474,
+    PANEL_POS_X         = 437,
+    PANEL_POS_Y         = 474,
+    PLAY_POS_X          = 628,
+    PLAY_POS_Y          = 487,
 #else
-    MAIN_FRAME_HEIGHT  = 600,
+    MAIN_FRAME_HEIGHT   = 600,
+    BUTTON_HEIGHT       = 73,
+    BUTTON_WIDTH        = 137,
+    HOME_POS_X          = 15,
+    HOME_POS_Y          = 469,
+    FORUM_POS_X         = 154,
+    FORUM_POS_Y         = 469,
+    ARMORY_POS_X        = 293,
+    ARMORY_POS_Y        = 469,
+    PANEL_POS_X         = 432,
+    PANEL_POS_Y         = 469,
+    PLAY_POS_X          = 623,
+    PLAY_POS_Y          = 482,
 #endif
 
     THREAD_SLEEP_INTERVAL = 10000,

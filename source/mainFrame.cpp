@@ -104,22 +104,19 @@ MainFrame::MainFrame(const wxString& title)
     #endif
 
     m_button[BUTTON_HOME] = new wxBitmapButton(m_panel, ID_HOME, wxBitmap(btnHomeXpm),
-                               wxPoint(20, 474), wxSize(127, 63), wxBORDER_NONE);
+                               wxPoint(HOME_POS_X, HOME_POS_Y), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), wxBORDER_NONE);
 
     m_button[BUTTON_FORUM] = new wxBitmapButton(m_panel, ID_FORUM, wxBitmap(btnForumXpm),
-                               wxPoint(159, 474), wxSize(128, 63), wxBORDER_NONE);
+                               wxPoint(FORUM_POS_X, FORUM_POS_Y), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), wxBORDER_NONE);
 
     m_button[BUTTON_ARMORY] = new wxBitmapButton(m_panel, ID_ARMORY, wxBitmap(btnArmoryXpm),
-                               wxPoint(298, 474), wxSize(127, 63), wxBORDER_NONE);
+                               wxPoint(ARMORY_POS_X, ARMORY_POS_Y), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), wxBORDER_NONE);
 
     m_button[BUTTON_PANEL] = new wxBitmapButton(m_panel, ID_PANEL, wxBitmap(btnPanelXpm),
-                               wxPoint(437, 474), wxSize(127, 63), wxBORDER_NONE);
-
-    //m_button[BUTTON_WIKI] = new wxButton(m_panel, ID_WIKI, wxString(/*"HG WoWWiki"*/""),
-    //                           wxPoint(MAIN_FRAME_WIDTH-130, 504), wxSize(120, 60));
+                               wxPoint(PANEL_POS_X, PANEL_POS_Y), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), wxBORDER_NONE);
 
     m_button[BUTTON_PLAY] = new wxBitmapButton(m_panel, ID_PLAY, wxBitmap(btnPlayXpm),
-                               wxPoint(628, 487), wxSize(127, 48), wxBORDER_NONE);
+                               wxPoint(PLAY_POS_X, PLAY_POS_Y), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), wxBORDER_NONE);
 
     m_checkbox = new wxCheckBox(m_panel, ID_CHECK_BOX, wxString(/*"-opengl"*/""), wxPoint(646, 465));
     //ustaw checkboxa zaznaczonego domyslnie
