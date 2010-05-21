@@ -85,9 +85,10 @@ MainFrame::MainFrame(const wxString& title)
 
     //m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(0,100), wxSize(MAIN_FRAME_WIDTH, 348), wxHW_SCROLLBAR_NEVER);
 
-    m_info[INFO_MAIN] = new wxStaticText(this, ID_INFO_MAIN, "", wxPoint(50, 100), wxSize(400, 200), wxST_NO_AUTORESIZE);
-    m_info[INFO_CHANGELOG] = new wxStaticText(this, ID_INFO_CHANGELOG, "", wxPoint(50, 350), wxSize(400, 100), wxST_NO_AUTORESIZE);
-    m_info[INFO_OTHER] = new wxStaticText(this, ID_INFO_OTHER, "", wxPoint(500, 100), wxSize(250, 350), wxST_NO_AUTORESIZE);
+    m_info[INFO_MAIN] = new wxStaticText(this, ID_INFO_MAIN, "", wxPoint(50, 100), wxSize(400, 175), wxALIGN_CENTRE|wxST_NO_AUTORESIZE);
+    m_info[INFO_CHANGELOG] = new wxStaticText(this, ID_INFO_CHANGELOG, "", wxPoint(50, 325), wxSize(400, 125), wxALIGN_LEFT|wxST_NO_AUTORESIZE);
+    m_info[INFO_OTHER] = new wxStaticText(this, ID_INFO_OTHER, "", wxPoint(500, 100), wxSize(250, 350), wxALIGN_CENTRE|wxST_NO_AUTORESIZE);
+
 
     // TODO: fix it for windows
     //m_html->LoadPage("66.102.13.147");
@@ -96,7 +97,7 @@ MainFrame::MainFrame(const wxString& title)
     {
         wxHTTP get;
         get.SetHeader(_T("Content-Type"), _T("text/html; charset=utf-8"));
-        get.SetTimeout(25); //25 sekund zamiast 10 minut
+        get.SetTimeout(10); //10 sekund zamiast 10 minut
 
         wxInputStream * httpInput;
 
@@ -105,8 +106,9 @@ MainFrame::MainFrame(const wxString& title)
             httpInput = get.GetInputStream(*InfoFileName(i));
 
             if (get.GetError() == wxPROTO_NOERR)
-            {
+            {               
                 wxString out;
+
                 wxStringOutputStream outStream(&out);
                 httpInput->Read(outStream);
 
