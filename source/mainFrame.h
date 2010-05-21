@@ -63,6 +63,14 @@ enum Buttons
     MAIN_FRAME_BUTTONS = 5,//6,
 };
 
+enum Infos
+{
+    INFO_MAIN = 0,
+    INFO_CHANGELOG,
+    INFO_OTHER,
+    INFO_COUNT = 3,
+};
+
 enum
 {
     ID_HOME = 1,
@@ -76,6 +84,9 @@ enum
     ID_CHECK_BOX,
     ID_TASKBAR,
     ID_BACKGROUND,
+    ID_INFO_MAIN,
+    ID_INFO_CHANGELOG,
+    ID_INFO_OTHER,
 };
 
 class TaskBar : public wxTaskBarIcon
@@ -126,24 +137,28 @@ class MainFrame : public wxFrame
 
         void OnWoWClose(wxProcessEvent &)
         {
-            m_button[BUTTON_PLAY]->Enable();
-            this->Show();
+            //m_button[BUTTON_PLAY]->Enable();
+            //this->Show();
+            this->Close();
         }
 
-    private:
-        wxPanel  *m_panel;
-        wxBitmapButton *m_button[MAIN_FRAME_BUTTONS];
-        wxHtmlWindow *m_html;
-        wxCheckBox * m_checkbox;
-        wxSocketClient *m_sock;
-        #ifdef WIN32
-        wxBitmapButton *m_background;
-        #else
-        wxStaticBitmap *m_background;
-        #endif
-        TaskBar *m_taskbar;
+        wxString * InfoFileName(int info);
 
-        ACThread *m_thread;
+    private:
+        wxPanel * m_panel;
+        wxBitmapButton * m_button[MAIN_FRAME_BUTTONS];
+        //wxHtmlWindow *m_html;
+        wxCheckBox * m_checkbox;
+        wxSocketClient * m_sock;
+        wxStaticText * m_info[INFO_COUNT];
+        #ifdef WIN32
+        wxBitmapButton * m_background;
+        #else
+        wxStaticBitmap * m_background;
+        #endif
+        TaskBar * m_taskbar;
+
+        ACThread * m_thread;
 
         wxIPV4address m_ip;
 

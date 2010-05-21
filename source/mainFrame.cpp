@@ -6,6 +6,8 @@
 #include <wx/html/htmlwin.h>
 #include <wx/file.h>
 #include <wx/bitmap.h>
+#include <wx/protocol/http.h>
+#include <wx/sstream.h>
 
 MainFrame * window;
 
@@ -81,11 +83,46 @@ MainFrame::MainFrame(const wxString& title)
     wxInitAllImageHandlers();
     m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT));
 
-    m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(0,100), wxSize(MAIN_FRAME_WIDTH, 348), wxHW_SCROLLBAR_NEVER);
+    //m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(0,100), wxSize(MAIN_FRAME_WIDTH, 348), wxHW_SCROLLBAR_NEVER);
+
+    m_info[INFO_MAIN] = new wxStaticText(this, ID_INFO_MAIN, "", wxPoint(50, 100), wxSize(400, 200), wxST_NO_AUTORESIZE);
+    m_info[INFO_CHANGELOG] = new wxStaticText(this, ID_INFO_CHANGELOG, "", wxPoint(50, 350), wxSize(400, 100), wxST_NO_AUTORESIZE);
+    m_info[INFO_OTHER] = new wxStaticText(this, ID_INFO_OTHER, "", wxPoint(500, 100), wxSize(250, 350), wxST_NO_AUTORESIZE);
 
     // TODO: fix it for windows
     //m_html->LoadPage("66.102.13.147");
-    m_html->SetPage("HTML WINDOW - newsy, changelog, whatever ");
+
+    for (int i = 0; i < INFO_COUNT; i++)
+    {
+        wxHTTP get;
+        get.SetHeader(_T("Content-Type"), _T("text/html; charset=utf-8"));
+        get.SetTimeout(25); //25 sekund zamiast 10 minut
+
+        wxInputStream * httpInput;
+
+        if (get.Connect(_T("www.fumetsu.cba.pl")))
+        {
+            httpInput = get.GetInputStream(*InfoFileName(i));
+
+            if (get.GetError() == wxPROTO_NOERR)
+            {
+                wxString out;
+                wxStringOutputStream outStream(&out);
+                httpInput->Read(outStream);
+
+                m_info[i]->SetOwnForegroundColour(wxColour("WHITE"));
+                m_info[i]->SetLabel(out);
+            }
+            else
+            {
+                m_info[i]->SetLabel("B³¹d po³¹czenia !!");
+            }
+        }
+        else
+        {
+            m_info[i]->SetLabel("B³¹d ³¹czenia z serwerem http !!");
+        }
+    }
 
     s_ip.Hostname(ADRES);
     s_ip.Service(5600);
@@ -116,7 +153,7 @@ MainFrame::MainFrame(const wxString& title)
                                wxPoint(PANEL_POS_X, PANEL_POS_Y), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), wxBORDER_NONE);
 
     m_button[BUTTON_PLAY] = new wxBitmapButton(m_panel, ID_PLAY, wxBitmap(btnPlayXpm),
-                               wxPoint(PLAY_POS_X, PLAY_POS_Y), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), wxBORDER_NONE);
+                               wxPoint(PLAY_POS_X, PLAY_POS_Y), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT-15), wxBORDER_NONE);
 
     m_checkbox = new wxCheckBox(m_panel, ID_CHECK_BOX, wxString(/*"-opengl"*/""), wxPoint(646, 465));
     //ustaw checkboxa zaznaczonego domyslnie
@@ -143,7 +180,7 @@ MainFrame::MainFrame(const wxString& title)
                   LAUNCHER_VERSION);
 
     SetIcon(wxIcon(wow_xpm));
-    m_html->SetBackgroundImage(wxBitmap(htmlBoxXpm));
+    //m_html->SetBackgroundImage(wxBitmap(htmlBoxXpm));
 
     m_button[BUTTON_HOME]->SetBitmapHover(wxBitmap(btnHomeHXpm));
     m_button[BUTTON_FORUM]->SetBitmapHover(wxBitmap(btnForumHXpm));
@@ -157,7 +194,7 @@ MainFrame::~MainFrame()
     //m_thread->Wait();
     for (int i = 0; i < MAIN_FRAME_BUTTONS; i++)
         delete m_button[i];
-    delete m_html;
+    //delete m_html;
     delete m_taskbar;
 #ifdef LINUX
     delete m_checkbox;
@@ -224,6 +261,25 @@ void *ACThread::Entry()
         Sleep(THREAD_SLEEP_INTERVAL);
     }
     return 0;
+}
+
+wxString * MainFrame::InfoFileName(int info)
+{
+    wxString * tmp;
+    switch(info)
+    {
+    case 0:
+        tmp = new wxString("/test1.txt");
+        break;
+    case 1:
+        tmp = new wxString("/test2.txt");
+        break;
+    case 2:
+        tmp = new wxString("/test3.txt");
+        break;
+    }
+
+    return tmp;
 }
 
 //---------------------------------------------------------TaskBar
