@@ -10,7 +10,10 @@
 
 #define LAUNCHER_VERSION    "0.0.1"
                         //logonhg.gamefreedom.pl
-#define ADRES wxString("logonhg.gamefreedom.pl")
+#define ADRES           wxString("logonhg.gamefreedom.pl")
+#define ADRES_PARSER    wxString("www.logonhg.gamefreedom.pl")
+#define PLIK_PARSER     wxString("/parser.irc")
+#define REFRESH_TIMER   60000;
 
 #ifdef WIN32
     #define wxEXEC_NOEVENTS 0
@@ -33,6 +36,14 @@ enum
     PANEL_POS_Y         = 474,
     PLAY_POS_X          = 628,
     PLAY_POS_Y          = 487,
+    INFO_MAIN_POS_X     = 50,
+    INFO_MAIN_POS_Y     = 100,
+    INFO_CHANGE_POS_X   = 50,
+    INFO_CHANGE_POS_Y   = 325,
+    INFO_OTHER_POS_X    = 500,
+    INFO_OTHER_POS_Y    = 100,
+    INFO_ONLINE_POS_X   = 50,
+    INFO_ONLINE_POS_Y   = 290,
 #else
     MAIN_FRAME_HEIGHT   = 600,
     BUTTON_HEIGHT       = 73,
@@ -47,6 +58,15 @@ enum
     PANEL_POS_Y         = 469,
     PLAY_POS_X          = 623,
     PLAY_POS_Y          = 482,
+                                //DO POPRAWY
+    INFO_MAIN_POS_X     = 50,
+    INFO_MAIN_POS_Y     = 100,
+    INFO_CHANGE_POS_X   = 50,
+    INFO_CHANGE_POS_Y   = 325,
+    INFO_OTHER_POS_X    = 500,
+    INFO_OTHER_POS_Y    = 100,
+    INFO_ONLINE_POS_X   = 50,
+    INFO_ONLINE_POS_Y   = 290,
 #endif
 
     THREAD_SLEEP_INTERVAL = 10000,
@@ -87,6 +107,7 @@ enum
     ID_INFO_MAIN,
     ID_INFO_CHANGELOG,
     ID_INFO_OTHER,
+    ID_INFO_ONLINE,
 };
 
 class TaskBar : public wxTaskBarIcon
@@ -125,6 +146,9 @@ class MainFrame : public wxFrame
         MainFrame(const wxString& title);
         ~MainFrame();
 
+        wxString * InfoFileName(int info);
+        void RefreshOnline();
+
         DECLARE_EVENT_TABLE();
 
         void OnHome(wxCommandEvent &)  {wxLaunchDefaultBrowser(wxString("http://wow.gamefreedom.pl/"));};
@@ -134,6 +158,7 @@ class MainFrame : public wxFrame
         void OnWiki(wxCommandEvent &)  {wxLaunchDefaultBrowser(wxString("http://hgwiki.gamefreedom.pl/"));};
         void OnPlay(wxCommandEvent &);
         void OnTaskBarLeftClick(wxTaskBarIconEvent &);
+        void MinimazeToTray(wxIconizeEvent &){this->Hide();}
 
         void OnWoWClose(wxProcessEvent &)
         {
@@ -142,8 +167,6 @@ class MainFrame : public wxFrame
             this->Close();
         }
 
-        wxString * InfoFileName(int info);
-
     private:
         wxPanel * m_panel;
         wxBitmapButton * m_button[MAIN_FRAME_BUTTONS];
@@ -151,6 +174,7 @@ class MainFrame : public wxFrame
         wxCheckBox * m_checkbox;
         wxSocketClient * m_sock;
         wxStaticText * m_info[INFO_COUNT];
+        wxStaticText * m_online;
         #ifdef WIN32
         wxBitmapButton * m_background;
         #else
