@@ -3,7 +3,7 @@
 
 #include <wx/process.h>
 #include <wx/socket.h>
-#include <wx/html/htmlwin.h>
+//#include <wx/html/htmlwin.h>
 #include <wx/file.h>
 #include <wx/bitmap.h>
 #include <wx/protocol/http.h>
@@ -23,6 +23,7 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
   EVT_BUTTON( ID_ARMORY, MainFrame::OnArmory)
   EVT_BUTTON( ID_PLAY,   MainFrame::OnPlay)
   EVT_END_PROCESS( ID_WOW_PROCESS, MainFrame::OnWoWClose)
+  EVT_ICONIZE(MainFrame::MinimazeToTray)
 END_EVENT_TABLE()
 
 
@@ -76,7 +77,7 @@ bool process_scan()
 
 MainFrame::MainFrame(const wxString& title)
 : wxFrame((wxFrame *)NULL, wxID_ANY, title, wxDefaultPosition, wxSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT),
-          wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxFRAME_SHAPED)
+          wxSYSTEM_MENU | wxCAPTION | wxMINIMIZE_BOX | wxCLOSE_BOX | wxCLIP_CHILDREN | wxFRAME_SHAPED)
 {
     window = this;
     Center();
@@ -85,9 +86,14 @@ MainFrame::MainFrame(const wxString& title)
 
     //m_html = new wxHtmlWindow(this, ID_HTML, wxPoint(0,100), wxSize(MAIN_FRAME_WIDTH, 348), wxHW_SCROLLBAR_NEVER);
 
-    m_info[INFO_MAIN] = new wxStaticText(this, ID_INFO_MAIN, "", wxPoint(50, 100), wxSize(400, 175), wxALIGN_CENTRE|wxST_NO_AUTORESIZE);
-    m_info[INFO_CHANGELOG] = new wxStaticText(this, ID_INFO_CHANGELOG, "", wxPoint(50, 325), wxSize(400, 125), wxALIGN_LEFT|wxST_NO_AUTORESIZE);
-    m_info[INFO_OTHER] = new wxStaticText(this, ID_INFO_OTHER, "", wxPoint(500, 100), wxSize(250, 350), wxALIGN_CENTRE|wxST_NO_AUTORESIZE);
+    m_online = new wxStaticText(this, ID_INFO_ONLINE, "", wxPoint(INFO_ONLINE_POS_X, INFO_ONLINE_POS_Y), wxSize(400, 20), wxALIGN_CENTRE|wxST_NO_AUTORESIZE);
+    m_online->SetOwnForegroundColour("WHITE");
+
+    RefreshOnline();
+
+    m_info[INFO_MAIN] = new wxStaticText(this, ID_INFO_MAIN, "", wxPoint(INFO_MAIN_POS_X, INFO_MAIN_POS_Y), wxSize(400, 175), wxALIGN_CENTRE|wxST_NO_AUTORESIZE);
+    m_info[INFO_CHANGELOG] = new wxStaticText(this, ID_INFO_CHANGELOG, "", wxPoint(INFO_CHANGE_POS_X, INFO_CHANGE_POS_Y), wxSize(400, 125), wxALIGN_LEFT|wxST_NO_AUTORESIZE);
+    m_info[INFO_OTHER] = new wxStaticText(this, ID_INFO_OTHER, "", wxPoint(INFO_OTHER_POS_X, INFO_OTHER_POS_Y), wxSize(250, 350), wxALIGN_CENTRE|wxST_NO_AUTORESIZE);
 
 
     // TODO: fix it for windows
@@ -242,10 +248,20 @@ void MainFrame::OnPlay(wxCommandEvent &)
 
 void *ACThread::Entry()
 {
+    int refreshTimer = REFRESH_TIMER;
     while (loop)
     {
         if (!m_sock->IsConnected())
             m_sock->Connect(s_ip, true);
+
+        if (refreshTimer <= 0 )
+        {
+            if (window)
+            {
+                window->RefreshOnline();
+                refreshTimer = REFRESH_TIMER;
+            }
+        }
 
         if (m_sock->IsConnected())
         {
@@ -253,6 +269,7 @@ void *ACThread::Entry()
             if (process_scan())
             {
                 m_sock->Write("Kc", 2);
+                refreshTimer -= THREAD_SLEEP_INTERVAL;
                 Sleep(THREAD_SLEEP_INTERVAL);
                 continue;
             }
@@ -260,6 +277,7 @@ void *ACThread::Entry()
         }
         else
             m_sock->Close();
+        refreshTimer -= THREAD_SLEEP_INTERVAL;
         Sleep(THREAD_SLEEP_INTERVAL);
     }
     return 0;
@@ -284,6 +302,65 @@ wxString * MainFrame::InfoFileName(int info)
     return tmp;
 }
 
+void MainFrame::RefreshOnline()
+{
+    wxHTTP get;
+    get.SetHeader(_T("Content-Type"), _T("text/html; charset=utf-8"));
+    get.SetTimeout(10); //10 sekund zamiast 10 minut
+
+    wxInputStream * httpInput;
+
+    if (get.Connect(ADRES_PARSER))
+    {
+        httpInput = get.GetInputStream(PLIK_PARSER);
+
+        if (get.GetError() == wxPROTO_NOERR)
+        {               
+            wxString out;
+            wxArrayString pars;
+            wxString wypisz;
+            bool przerwane = false;
+
+            wxStringOutputStream outStream(&out);
+            httpInput->Read(outStream);
+
+            int poprzedni = 0;
+            for (unsigned int i = 0; i < out.length(); i++)
+            {
+                if (out.GetChar(i) == ' ' || out.GetChar(i) == '\n')
+                {
+                    pars.Add(out.SubString(poprzedni, i));
+                    poprzedni = i;
+                }
+
+                if (out.GetChar(i) != '1' && out.GetChar(i) != '2' && out.GetChar(i) != '3' && out.GetChar(i) != '4' && out.GetChar(i) != '5' && 
+                    out.GetChar(i) != '6' && out.GetChar(i) != '7' && out.GetChar(i) != '8' && out.GetChar(i) != '9' && out.GetChar(i) != '0' && 
+                    out.GetChar(i) != ' ' && out.GetChar(i) != '\n')
+                {
+                    przerwane = true;
+                    wypisz = "OFFLINE/DC";
+                    break;
+                }
+            }
+
+            if (!przerwane)
+            {
+                wypisz = "online: " + pars[1] + "/" + pars[5] + " (max" + pars[2] + ") Q:" + pars[3] + "  rev: " + pars[6];
+            }
+            
+            m_online->SetLabel(wypisz);
+        }
+        else
+        {
+            m_online->SetLabel("Offline");
+        }
+    }
+    else
+    {
+        m_online->SetLabel("Offline");
+    }
+}
+
 //---------------------------------------------------------TaskBar
 
 enum
@@ -303,7 +380,10 @@ void TaskBar::OnMenuShowHide(wxCommandEvent& )
     if (window->IsShown())
         window->Hide();
     else
+    {
         window->Show();
+        window->Restore();
+    }
 }
 
 void TaskBar::OnMenuExit(wxCommandEvent& )
@@ -325,7 +405,10 @@ void TaskBar::OnLeftButtonDClick(wxTaskBarIconEvent&)
     if (window->IsShown())
         window->Hide();
     else
+    {
         window->Show();
+        window->Restore();
+    }
 }
 
 /*void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
